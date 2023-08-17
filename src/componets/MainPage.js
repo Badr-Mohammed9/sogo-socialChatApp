@@ -1,14 +1,51 @@
 import Container from "./Container";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import css from "../CSS/mainPage.module.css";
 import AddIcon from "@mui/icons-material/Add";
 import Button from "@mui/material/Button";
 import Avatar from "@mui/material/Avatar";
-
+import TextField from "@mui/material/TextField";
+import CancelIcon from "@mui/icons-material/Cancel";
 import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
 import Room from "./Room";
+import axios from "axios";
+function MainPage({ children }) {
+  const [Groups, setGroups] = useState([]);
+  const [formData, setFormData] = useState({
+    title: "title",
+    topic: "Cybersecurity",
+  });
+  const [formState, setFormState] = useState("none");
+  function buttonType() {
+    if (formState) {
+      return (
+        <Button
+          style={{ backgroundColor: "#00ABB3" }}
+          startIcon={<AddIcon />}
+          variant="contained"
+          onClick={(el) => {
+            setFormState("");
+          }}
+        >
+          Create Group
+        </Button>
+      );
+    } else {
+      return (
+        <Button
+          style={{ backgroundColor: "#C70039" }}
+          startIcon={<CancelIcon />}
+          variant="contained"
+          onClick={(el) => {
+            setFormState("none");
+          }}
+        >
+          Cancel
+        </Button>
+      );
+    }
+  }
 
-function MainPage() {
   return (
     <Container>
       <div className={css.body}>
@@ -21,6 +58,10 @@ function MainPage() {
             }}
           >
             BROWSE TOPICS
+          </div>
+          <div className={css.topic}>
+            <div className={css.hashtagName}>All TOPICS</div>
+            <div className={css.topicNumber}>3</div>
           </div>
           <div className={css.topic}>
             <div className={css.hashtagName}>#Cybersecurity</div>
@@ -52,45 +93,7 @@ function MainPage() {
           </div>
         </div>
 
-        <div className={css.roomsPart}>
-          <div className={css.headr}>
-            <div>
-              <div
-                style={{
-                  color: "white",
-                  fontWeight: "bold",
-                  fontSize: "1rem",
-                  marginBottom: "0.2rem",
-                }}
-              >
-                Social Groups
-              </div>
-              <div
-                style={{
-                  fontSize: "0.8rem",
-                  color: "gray",
-                  opacity: "0.7",
-                }}
-              >
-                7 Groups availble
-              </div>
-            </div>
-            <Button
-              style={{ backgroundColor: "#00ABB3" }}
-              startIcon={<AddIcon />}
-              variant="contained"
-            >
-              Create Group
-            </Button>
-          </div>
-          <div className={css.rooms}>
-            <Room />
-            <Room />
-            <Room />
-            <Room />
-            <Room />
-          </div>
-        </div>
+        <div className={css.roomsPart}>{children}</div>
         <div className={css.adPart}>
           <div className={css.ad}>
             <div
@@ -116,13 +119,12 @@ function MainPage() {
             />
             {/* bottom ad */}
             <div>
-              <div style={{ fontSize: "90%", opacity: "0.9" }}>
-                ResorLink
-              </div>
+              <div style={{ fontSize: "90%", opacity: "0.9" }}>ResorLink</div>
               <div
                 style={{ fontSize: "75%", opacity: "0.7", marginTop: "0.2rem" }}
               >
-                get a creative HeadPhone and feel the music!, check the website for more information
+                get a creative HeadPhone and feel the music!, check the website
+                for more information
               </div>
             </div>
           </div>
@@ -134,7 +136,7 @@ function MainPage() {
                 height: "40%",
                 backgroundColor: "",
                 display: "flex",
-                alignItems:'center'
+                alignItems: "center",
               }}
             >
               <Avatar
@@ -142,7 +144,9 @@ function MainPage() {
                 src="https://i.pinimg.com/564x/03/f9/85/03f9851b2693ae389081f1cbb3b19cb7.jpg"
                 sx={{ width: 45, height: 45 }}
               />
-              <div style={{marginLeft:'0.4rem',fontSize:'90%'}}>Ken brad</div>
+              <div style={{ marginLeft: "0.4rem", fontSize: "90%" }}>
+                Ken brad
+              </div>
             </div>
             <div
               style={{
@@ -150,7 +154,7 @@ function MainPage() {
                 height: "40%",
                 backgroundColor: "",
                 display: "flex",
-                alignItems:'center'
+                alignItems: "center",
               }}
             >
               <Avatar
@@ -158,7 +162,9 @@ function MainPage() {
                 src="https://preview.redd.it/n5r9jmghnvv61.png?width=640&crop=smart&auto=webp&s=7e671b2392eb2d1cc50d57713eba3b052cbe08f8"
                 sx={{ width: 45, height: 45 }}
               />
-              <div style={{marginLeft:'0.4rem',fontSize:'90%'}}>badr mohammed</div>
+              <div style={{ marginLeft: "0.4rem", fontSize: "90%" }}>
+                badr mohammed
+              </div>
             </div>
           </div>
         </div>
@@ -166,5 +172,27 @@ function MainPage() {
     </Container>
   );
 }
+
+const getImageFile = (filename) => {
+  const newFilePath = filename.replace("/images/", "");
+  const url = `http://127.0.0.1:8000/group/image/${newFilePath}/`;
+  const token = localStorage.getItem("token");
+
+  return axios({
+    url: url,
+    method: "GET",
+    headers: {
+      Authorization: `Token ${token}`,
+    },
+    responseType: "blob", // Specify that the response should be treated as a binary blob
+  })
+    .then((response) => {
+      const imageUrl = URL.createObjectURL(response.data);
+      return imageUrl;
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
+};
 
 export default MainPage;

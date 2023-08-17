@@ -1,0 +1,217 @@
+.body {
+  width: 100%;
+  height: 100%;
+  /* background-color: aliceblue; */
+  display: flex;
+  justify-content: space-around;
+  overflow: hidden;
+}
+
+.parts {
+  width: 100%;
+  height: 100%;
+  margin: auto;
+  /* background-color: aliceblue; */
+  display: flex;
+  justify-content: space-around;
+  margin-top: 2rem;
+}
+
+.profilePart {
+  width: 20%;
+  height: 500px;
+  background-color: #181818;
+  border-radius: 15px;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  height: 400px;
+  justify-content: space-between;
+}
+
+.charPart {
+  width: 45%;
+  /* background-color: red; */
+  border-radius: 15px;
+  overflow-y: scroll;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 6rem;
+}
+
+.charPart::-webkit-scrollbar {
+  display: none;
+}
+.particpantsPart {
+  width: 20%;
+  height: 500px;
+  overflow: hidden;
+  overflow-y: scroll;
+  background-color: #181818;
+  border-radius: 15px;
+  padding: 1rem;
+}
+hr {
+  width: 100%;
+  opacity: 0.5;
+}
+.profileRow {
+  margin-top: 0.6rem;
+  margin-bottom: 0.4rem;
+  display: flex;
+  width: 100%;
+  height: 10%;
+  /* background-color: red; */
+  align-items: center;
+}
+
+.infoBar {
+  width: 100%;
+  height: 16%;
+  /* background-color: gainsboro; */
+}
+
+.info {
+  color: white;
+  align-items: center;
+  display: flex;
+  height: 50%;
+  /* background-color: red; */
+}
+
+.groupInfo {
+  width: 100%;
+  height: 40%;
+  /* background-color: red; */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.chatArea {
+  height: 15%;
+  width: 90%;
+  background-color: gray;
+  padding: 1rem;
+}
+
+.upperChat {
+  height: 10%;
+  background-color: #181818;
+  display: flex;
+  align-items: center;
+  width: 94%;
+  padding: 1rem;
+  border-bottom: 0.6px solid gray;
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+}
+.tagsContainer {
+  padding: 1rem;
+  width: 94%;
+  background-color: #181818;
+  border-bottom-left-radius: 15px;
+  border-bottom-right-radius: 15px;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.tags {
+  height: 5%;
+  display: flex;
+  align-items: center;
+  width: 80%;
+  justify-content: space-between;
+  /* background-color: gainsboro; */
+  border-bottom-left-radius: 15px;
+  border-bottom-right-radius: 15px;
+  color: white;
+  opacity: 0.8;
+  position: relative;
+}
+
+.tags div {
+  display: flex;
+  align-items: center;
+  font-size: 80%;
+  padding: 0.5rem;
+  border-radius: 25px;
+}
+
+.tags div:hover {
+  box-shadow: inset 0 0 0 10em rgba(255, 255, 255, 0.3);
+}
+
+.tag span {
+  margin-left: 0.2rem;
+}
+.imageInput {
+  height: 10%;
+  /* background-color: rebeccapurple; */
+  padding: 1rem;
+  width: 94%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #181818;
+}
+
+.postButton {
+  position: absolute;
+  right: 0;
+  background-color: #3e68a8;
+}
+
+.post {
+  width: 94%;
+  /* height: 20%; */
+  max-height: 29rem;
+  background-color: #181818;
+  padding: 1rem;
+  margin-top: 2rem;
+  border-radius: 15px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  position: relative;
+}
+
+.headrPost {
+  width: 100%;
+  height: 4rem;
+  /* background-color: gray; */
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.headrPost:hover{
+    cursor: pointer;
+}
+
+.profileRow:hover{cursor: pointer;}
+.bodyPost {
+  min-height: 2rem;
+  max-height: 5rem;
+  width: 100%;
+  color: white;
+  margin-top: 0.3rem;
+}
+
+.imagePost {
+  height: 20rem;
+  background-color: #3e68a8;
+  border-radius: 15px;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+  overflow: hidden;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.img {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.menu{
+    position: absolute;
+}

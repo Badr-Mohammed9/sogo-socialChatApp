@@ -62,7 +62,7 @@ function Headr() {
   return (
     <div className={css.container}>
       <div className={css.headr}>
-        <div className={css.logo}>SogoChat</div>
+        <div onClick={el => window.location.href='/'} className={css.logo}>SogoChat</div>
         <div className={css.searchBar}>
           <TextField
             color=""

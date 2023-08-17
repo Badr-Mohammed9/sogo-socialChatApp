@@ -35,11 +35,22 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
     },
   },
 }));
-const Room = () => {
+const Room = ({
+  owner,
+  title = "title",
+  topic = "none",
+  participants = 0,
+  id,
+}) => {
   return (
     <div className={css.room}>
       <div className={css.roomHeadr}>
-        <div className={css.userTag}>
+        <div
+          onClick={(el) => {
+            window.location.href = "/profile/" + owner.id;
+          }}
+          className={css.userTag}
+        >
           <StyledBadge
             overlap="circular"
             anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
@@ -48,7 +59,7 @@ const Room = () => {
             <Avatar
               style={{ outline: "1px solid aqua" }}
               alt="Remy Sharp"
-              src="https://i1.sndcdn.com/avatars-HqKil0QNnVTUYizD-9a0wkA-t500x500.jpg"
+              src={owner.profile.image}
             />
           </StyledBadge>
           <div
@@ -59,20 +70,30 @@ const Room = () => {
               fontWeight: "bold",
             }}
           >
-            @maxdbroly
+            @{owner.username}
           </div>
         </div>
       </div>
-      <div className={css.roomBody}>
-        JavaScript is by fat the best programing language ever!
+      <div
+        onClick={(el) => {
+          window.location.href = `/group/${id}`;
+        }}
+        className={css.roomBody}
+      >
+        {title}
       </div>
-      <div className={css.roomBottom}>
+      <div
+        onClick={(el) => {
+          window.location.href = `/group/${id}`;
+        }}
+        className={css.roomBottom}
+      >
         <div className={css.peopleTag}>
           <PeopleAltIcon style={{ fontSize: "1.1rem", color: "#00ABB3" }} />{" "}
-          <div>5</div>
+          <div>{participants}</div>
           <div>Joined</div>
         </div>
-        <div className={css.topicTag}>#Cybersecurity</div>
+        <div className={css.topicTag}>#{topic}</div>
       </div>
     </div>
   );
