@@ -7,10 +7,13 @@ import PermContactCalendarIcon from "@mui/icons-material/PermContactCalendar";
 import { display } from "@mui/system";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { UserContext } from "./UserContext";
+import { useContext } from "react";
 import Room from "./Room";
 import { useParams } from "react-router-dom";
 function Profile() {
   const { id } = useParams();
+  const { theme } = useContext(UserContext);
   const [Groups, setGroups] = useState([]);
   const [thisUser, setThisUser] = useState({
     id: 0,
@@ -27,66 +30,72 @@ function Profile() {
   });
 
   useEffect(() => {
-    const url = "http://127.0.0.1:8000/group/owner/"+id;
+    const url = "https://sogoapi.onrender.com/group/owner/" + id;
 
     // Assuming you have a valid CSRF token named 'csrftoken'
     const token = localStorage.getItem("token");
 
-    try {
-      axios
-        .get(url, {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Token ${token}`,
-          },
-        })
-        .then(async (response) => {
-          const data = response.data.groups;
-          const updatedData = await Promise.all(
-            data.map(async (group) => {
-              const imageUrl = await getImageFile(group.owner.profile.image);
-              group.owner.profile.image = imageUrl;
-              return group;
-            })
-          );
-          //   console.log(updatedData);
-          const groupData = updatedData.map((group, index) => {
-            return (
-              <Room
-                key={index}
-                owner={group.owner}
-                title={group.title}
-                topic={group.topic}
-                participants={group.participants.length}
-                id={group.id}
-              />
+    if (token) {
+      try {
+        axios
+          .get(url, {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Token ${token}`,
+            },
+          })
+          .then(async (response) => {
+            const data = response.data.groups;
+            const updatedData = await Promise.all(
+              data.map(async (group) => {
+                const imageUrl = await getImageFile(group.owner.profile.image);
+                group.owner.profile.image = imageUrl;
+                return group;
+              })
             );
+            //   console.log(updatedData);
+            const groupData = updatedData.map((group, index) => {
+              return (
+                <Room
+                  key={index}
+                  owner={group.owner}
+                  title={group.title}
+                  topic={group.topic}
+                  participants={group.participants.length}
+                  id={group.id}
+                />
+              );
+            });
+            setGroups(groupData);
           });
-          setGroups(groupData);
-        });
-    } catch (error) {
-      console.error("Error:", error.response.data);
+      } catch (error) {
+        console.error("Error:", error.response.data);
+      }
+    } else {
+      window.location.href = "/login";
     }
   }, []);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    axios
-      .get(`http://127.0.0.1:8000/user/${id}/`, {
-        headers: {
-          Authorization: `Token ${token}`,
-        },
-      })
-      .then(async (response) => {
-        let data = response.data.user;
-        const imageUrl = await getImageFile(data.profile.image);
-        data.profile.image = imageUrl;
-        //   console.log(data);
-        setThisUser(data);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+    if (token) {
+      axios
+        .get(`https://sogoapi.onrender.com/user/${id}/`, {
+          headers: {
+            Authorization: `Token ${token}`,
+          },
+        })
+        .then(async (response) => {
+          let data = response.data.user;
+          const imageUrl = await getImageFile(data.profile.image);
+          data.profile.image = imageUrl;
+          //   console.log(data);
+          setThisUser(data);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
   }, []);
 
   return (
@@ -115,7 +124,7 @@ function Profile() {
               src={thisUser.profile.image}
               sx={{ width: 90, height: 90 }}
             />
-            <span style={{ color: "white", fontSize: "1.3rem" }}>
+            <span style={{ color: theme.text, fontSize: "1.3rem" }}>
               {thisUser.first_name} {thisUser.last_name}
             </span>
             <span style={{ color: "aqua", fontWeight: "bold" }}>
@@ -123,11 +132,11 @@ function Profile() {
             </span>
           </div>
           <div
+            className={css.profileRow}
             style={{
               backgroundColor: "",
               height: "10%",
-              width: "50%",
-              color: "white",
+              color: theme.text,
               fontWeight: "bold",
               display: "flex",
               justifyContent: "space-between",
@@ -160,7 +169,7 @@ function Profile() {
             </div>
             <div
               style={{
-                color: "white",
+                color: theme.text,
                 height: "80%",
                 width: "100%",
                 overflow: "hidden",
@@ -189,7 +198,7 @@ function Profile() {
 export default Profile;
 const getImageFile = (filename) => {
   const newFilePath = filename.replace("/images/", "");
-  const url = `http://127.0.0.1:8000/group/image/${newFilePath}/`;
+  const url = `https://sogoapi.onrender.com/group/image/${newFilePath}/`;
   const token = localStorage.getItem("token");
 
   return axios({

@@ -40,6 +40,8 @@
   margin-bottom: 6rem;
 }
 
+.groupInfo{display: none;}
+
 .charPart::-webkit-scrollbar {
   display: none;
 }
@@ -214,4 +216,120 @@ hr {
 
 .menu{
     position: absolute;
+}
+
+@media (max-width: 769px) {
+  /* Styles for small screens */
+  .particpantsPart{
+    display: none;
+  }
+
+  .parts{
+    flex-direction: column;
+    align-items: center;
+    margin-top: 0.4rem;
+    height: 100%;
+    position: relative;
+  }
+
+  .profilePart {
+    width: 90%;
+    height: 50%;
+    overflow: hidden;
+    /* background-color: red; */
+    border-radius: 15px;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    font-size: 90%;
+    z-index: 3;
+    top: 0;
+    display: none;
+  }
+
+  .charPart {
+    width: 100%;
+    /* background-color: red; */
+    border-radius: 15px;
+    height: 100%;
+    overflow-y: scroll;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 0.6rem;
+    overflow-x: hidden;
+  }
+
+  .groupInfo{
+    height: 8%;
+    width: 90%;
+    background-color: #181818;
+    display:inline;
+    padding: 0 1rem;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    z-index: 3;
+    color: #3e68a8;
+    display: flex;
+    align-items: end;
+    justify-content: center;
+    position: relative;
+    top: 0.2rem;
+    text-align: center;
+  }
+
+  .groupInfo:hover{cursor: pointer;}
+
+  .groupDialgo{
+    width: 100%;
+    height: 20%;
+  }
+
+  .upperChat {
+    height: 15%;
+    background-color: #181818;
+    display: flex;
+    align-items: center;
+    width: 90%;
+    padding: 1rem;
+    border-bottom: 0.6px solid gray;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+  }
+
+  .tagsContainer {
+    padding: 1rem;
+    width: 90%;
+    background-color: #181818;
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    font-size: 90%;
+  }
+
+  .imageInput {
+    height: 20%;
+    /* background-color: rebeccapurple; */
+    padding: 1rem;
+    width: 90%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #181818;
+  }
+
+  .post {
+    width: 90%;
+    /* height: 20%; */
+    max-height: 29rem;
+    background-color: #181818;
+    padding: 1rem;
+    margin-top: 1rem;
+    border-radius: 15px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    position: relative;
+  }
 }

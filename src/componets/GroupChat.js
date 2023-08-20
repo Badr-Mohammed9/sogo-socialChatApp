@@ -16,11 +16,16 @@ import MicNoneOutlinedIcon from "@mui/icons-material/MicNoneOutlined";
 import { VoiceChatOutlined } from "@mui/icons-material";
 import MyDropzone from "./MyDropzone";
 import Post from "./Post";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
 import PostArea from "./PostArea";
 import GroupPofilePart from "./GroupPofilePart";
 import Particpants from "./Particpants";
 function GroupChat() {
-  const { userData } = useContext(UserContext);
+  const { userData, theme } = useContext(UserContext);
   const [inGroup, setInGroup] = useState(false);
   const [triggerPostArea, setTriggerPostArea] = useState(false);
   const [imageZone, setImageZone] = useState("none");
@@ -45,11 +50,20 @@ function GroupChat() {
   });
   const { id } = useParams();
 
+  const [open, setOpen] = React.useState('');
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   useEffect(
     (el) => {
       const token = localStorage.getItem("token");
       axios
-        .get(`http://127.0.0.1:8000/group/${id}`, {
+        .get(`https://sogoapi.onrender.com/group/${id}`, {
           headers: {
             Authorization: `Token ${token}`,
           },
@@ -108,7 +122,7 @@ function GroupChat() {
     }
 
     axios
-      .post("http://127.0.0.1:8000/group/post/create/", formData, {
+      .post("https://sogoapi.onrender.com/group/post/create/", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: `Token ${token}`,
@@ -132,10 +146,30 @@ function GroupChat() {
       });
   };
 
+  useEffect(() => {
+    const handleResize = () => {
+      setInGroup(window.innerWidth < 768);
+    };
+
+    // Initial check
+    handleResize();
+
+    // Listen for window resize events
+    window.addEventListener('resize', handleResize);
+
+    // Clean up event listener on component unmount
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
   return (
     <Container>
       <div className={css.body}>
         <div className={css.parts}>
+          {/* dialgo */}
+
+          {/* dialgo end */}
           <GroupPofilePart
             trigger={triggerPostArea}
             setTrigger={setTriggerPostArea}
@@ -144,8 +178,29 @@ function GroupChat() {
             setInGroup={setInGroup}
           />
 
-          <div className={css.charPart}>
-            <div className={css.upperChat}>
+          <div
+            style={{ backgroundColor: theme.secondry }}
+            className={css.charPart}
+          >
+            {/* <div
+              style={{ backgroundColor: theme.primary }}
+              className={css.groupInfo}
+              onClick={handleClickOpen}
+            >
+              <span
+                style={{
+                  position: "relative",
+                  top: "0.4rem",
+                }}
+              >
+                {" "}
+                Group info
+              </span>
+            </div> */}
+            <div
+              style={{ backgroundColor: theme.primary }}
+              className={css.upperChat}
+            >
               <Avatar
                 alt="Remy Sharp"
                 src={userData.profile.image}
@@ -165,7 +220,7 @@ function GroupChat() {
                 variant="standard"
                 placeholder="write something here..."
                 style={{
-                  backgroundColor: "#222222",
+                  backgroundColor: theme.secondry,
                   marginLeft: "0.8rem",
                   borderRadius: "25px",
                   padding: "0.7rem",
@@ -173,19 +228,23 @@ function GroupChat() {
                 }}
                 InputProps={{
                   style: {
-                    color: "white",
+                    color: theme.text,
                   },
                   disableUnderline: true,
                 }}
               />
             </div>
+           
             <MyDropzone
               mode={imageZone}
               setPostData={setPostData}
               postData={postData}
             />
 
-            <div className={css.tagsContainer}>
+            <div
+              style={{ backgroundColor: theme.primary }}
+              className={css.tagsContainer}
+            >
               <Button
                 disabled={!inGroup}
                 onClick={handleSubmit}
@@ -202,7 +261,7 @@ function GroupChat() {
               >
                 Post
               </Button>
-              <div className={css.tags}>
+              <div style={{ color: theme.text }} className={css.tags}>
                 <div
                   onClick={(el) => {
                     if (imageZone) {
@@ -239,7 +298,10 @@ function GroupChat() {
               setTrigger={setTriggerPostArea}
             />
           </div>
-          <div className={css.particpantsPart}>
+          <div
+            style={{ backgroundColor: theme.primary }}
+            className={css.particpantsPart}
+          >
             <Particpants
               group={group}
               inGroup={inGroup}
@@ -254,7 +316,7 @@ function GroupChat() {
 
 const getImageFile = (filename) => {
   const newFilePath = filename.replace("/images/", "");
-  const url = `http://127.0.0.1:8000/group/image/${newFilePath}/`;
+  const url = `https://sogoapi.onrender.com/group/image/${newFilePath}/`;
   const token = localStorage.getItem("token");
 
   return axios({
@@ -277,7 +339,7 @@ const getImageFile = (filename) => {
 export default GroupChat;
 
 const addParticipant = (groupId, userId) => {
-  const url = `http://127.0.0.1:8000/group/${groupId}/add-participant/`; // Replace with your API endpoint URL
+  const url = `https://sogoapi.onrender.com/group/${groupId}/add-participant/`; // Replace with your API endpoint URL
   const token = localStorage.getItem("token");
 
   const requestData = {

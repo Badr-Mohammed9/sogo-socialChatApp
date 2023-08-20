@@ -7,6 +7,7 @@ import axios from "axios";
 import { useState } from "react";
 import TextField from "@mui/material/TextField";
 import { styled } from "@mui/material/styles";
+import { Link } from "react-router-dom";
 
 const BootstrapButton = styled(Button)({
   boxShadow: "none",
@@ -62,15 +63,15 @@ function Signup() {
   });
   const [error, setError] = useState("");
   const [page, setPage] = useState("1");
-  const [userId,setUserID] = useState(0)
+  const [userId, setUserID] = useState(0);
   const handleSubmit = (event) => {
     event.preventDefault();
     axios
-      .post("http://127.0.0.1:8000/signup/", formState)
+      .post("https://sogoapi.onrender.com/signup/", formState)
       .then((response) => {
         console.log(response.data);
         localStorage.setItem("token", response.data.token);
-        setUserID(response.data.user.id)
+        setUserID(response.data.user.id);
         setPage("2");
         // handle successful registration here
       })
@@ -95,6 +96,7 @@ function Signup() {
         <form className={css.form} onSubmit={handleSubmit}>
           <h1 style={{ color: "white" }}>sign up</h1>
           <TextField
+            required
             name="first_name"
             onChange={handleChange}
             style={{ width: "90%" }}
@@ -125,6 +127,7 @@ function Signup() {
             }}
           />
           <TextField
+            required
             name="last_name"
             onChange={handleChange}
             style={{ width: "90%" }}
@@ -155,11 +158,11 @@ function Signup() {
             }}
           />
           <TextField
+            required
             name="username"
             onChange={handleChange}
             style={{ width: "90%" }}
             placeholder="user-name"
-            
             sx={{
               textTransform: "uppercase",
             }}
@@ -186,6 +189,7 @@ function Signup() {
             }}
           />
           <TextField
+            required
             name="email"
             onChange={handleChange}
             style={{ width: "90%" }}
@@ -216,6 +220,7 @@ function Signup() {
             }}
           />
           <TextField
+            required
             name="password1"
             type="password"
             onChange={handleChange}
@@ -247,6 +252,7 @@ function Signup() {
             }}
           />
           <TextField
+            required
             name="password2"
             type="password"
             onChange={handleChange}
@@ -281,6 +287,9 @@ function Signup() {
           <BootstrapButton variant="contained" disableRipple type="submit">
             Register
           </BootstrapButton>
+          <div>
+            already have an Account? <Link to={"/login"}>Login</Link>{" "}
+          </div>
         </form>
       );
     } else if (page === "2") {
@@ -291,7 +300,7 @@ function Signup() {
             el.preventDefault();
             const token = localStorage.getItem("token");
             const form = new FormData();
-            form.append('user',userId)
+            form.append("user", userId);
             form.append("image", profileForm.image);
             form.append("age", profileForm.age);
             form.append("university_name", profileForm.university_name);
@@ -299,7 +308,7 @@ function Signup() {
 
             try {
               const response = await axios.post(
-                "http://127.0.0.1:8000/create_user/",
+                "https://sogoapi.onrender.com/create_user/",
                 form,
                 {
                   headers: {
@@ -318,8 +327,9 @@ function Signup() {
         >
           <h1 style={{ color: "white" }}>sign up</h1>
           <TextField
+            required
             name="university_name"
-            value={profileForm['university_name']}
+            value={profileForm["university_name"]}
             onChange={(el) => {
               setProfileForm({
                 ...profileForm,
@@ -354,11 +364,12 @@ function Signup() {
             }}
           />
           <TextField
+            required
             name="age"
             onChange={(el) => {
               setProfileForm({ ...profileForm, age: el.target.value });
             }}
-            value={profileForm['age']}
+            value={profileForm["age"]}
             style={{ width: "90%" }}
             placeholder="age"
             sx={{
@@ -388,6 +399,7 @@ function Signup() {
           />
 
           <TextField
+            required
             name="bio"
             label="bio"
             // multiline
@@ -395,7 +407,7 @@ function Signup() {
             onChange={(el) => {
               setProfileForm({ ...profileForm, bio: el.target.value });
             }}
-            value={profileForm['bio']}
+            value={profileForm["bio"]}
             style={{ width: "90%" }}
             placeholder=""
             sx={{
@@ -426,6 +438,7 @@ function Signup() {
           <div style={{ width: "80%" }}>
             <span style={{ marginRight: "0.2rem" }}>Image:</span>
             <input
+              required
               onChange={(el) => {
                 setProfileForm({ ...profileForm, image: el.target.files[0] });
               }}

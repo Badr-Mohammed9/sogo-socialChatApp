@@ -3,14 +3,13 @@ import { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import { UserContext } from "./UserContext";
 
-function PostArea({ group, trigger,setTrigger }) {
-  const { userData } = useContext(UserContext);
+function PostArea({ group, trigger, setTrigger }) {
+  const { userData,theme } = useContext(UserContext);
 
   const [posts, setPosts] = useState([]);
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const token = localStorage.getItem("token");
         const config = {
           headers: {
             Authorization: `Token ${token}`,
@@ -18,7 +17,7 @@ function PostArea({ group, trigger,setTrigger }) {
         };
 
         const response = await axios.get(
-          `http://127.0.0.1:8000/group/${group.id}/posts/`,
+          `https://sogoapi.onrender.com/group/${group.id}/posts/`,
           config
         );
         const data = response.data.posts;
@@ -71,8 +70,12 @@ function PostArea({ group, trigger,setTrigger }) {
         console.error("Error fetching posts:", error);
       }
     };
-
-    fetchPosts();
+    const token = localStorage.getItem("token");
+    if (token) {
+      fetchPosts();
+    } else {
+      window.location.href = "/login";
+    }
   }, [group, trigger]);
   return <>{posts}</>;
 }
@@ -81,7 +84,7 @@ export default PostArea;
 
 const getImageFileForPostImage = (filename) => {
   const newFilePath = filename.replace("/postsImages/", "");
-  const url = `http://127.0.0.1:8000/group/image/posts/${newFilePath}/`;
+  const url = `https://sogoapi.onrender.com/group/image/posts/${newFilePath}/`;
   const token = localStorage.getItem("token");
 
   return axios({
@@ -103,7 +106,7 @@ const getImageFileForPostImage = (filename) => {
 
 const getImageFileFromImages = (filename) => {
   const newFilePath = filename.replace("/images/", "");
-  const url = `http://127.0.0.1:8000/group/image/${newFilePath}/`;
+  const url = `https://sogoapi.onrender.com/group/image/${newFilePath}/`;
   const token = localStorage.getItem("token");
 
   return axios({

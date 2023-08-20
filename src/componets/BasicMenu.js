@@ -16,7 +16,7 @@ export default function BasicMenu({ id, setTrigger }) {
   };
 
   const delAction = async () => {
-    const url = `http://127.0.0.1:8000/group/posts/${id}/`; // Replace with your API endpoint URL
+    const url = `https://sogoapi.onrender.com/group/posts/${id}/`; // Replace with your API endpoint URL
     const token = localStorage.getItem("token");
 
     try {
@@ -49,7 +49,7 @@ export default function BasicMenu({ id, setTrigger }) {
         aria-haspopup="true"
         aria-expanded={open ? "true" : undefined}
         onClick={handleClick}
-        style={{ fontSize: "1rem", color: "white" }}
+        style={{ fontSize: "1rem", color: "#00ABB3" }}
       >
         ...
       </Button>

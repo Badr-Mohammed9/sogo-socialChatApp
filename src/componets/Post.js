@@ -48,7 +48,7 @@ function Post({
     id: 0,
   },
 }) {
-  const { userData } = useContext(UserContext);
+  const { userData,theme } = useContext(UserContext);
 
   function delIcon() {
     if (userData.id === owner.id) {
@@ -56,7 +56,7 @@ function Post({
     }
   }
   return (
-    <div className={css.post}>
+    <div style={{backgroundColor:theme.primary}} className={css.post}>
       <div className={css.headrPost}>
         {delIcon()}
         <StyledBadge
@@ -72,7 +72,7 @@ function Post({
           }}
           style={{ marginLeft: "0.6rem" }}
         >
-          <div style={{ color: "white" }}>
+          <div style={{ color: theme.text }}>
             {owner.first_name} {owner.last_name}
           </div>
           <div
@@ -96,7 +96,7 @@ function Post({
           {/* <img src="https://media.sproutsocial.com/uploads/2022/05/How-to-post-on-instagram-from-pc.jpg" className={css.img} alt="post-img"/> */}
         </div>
       )}
-      <div className={css.bodyPost}>{text}</div>
+      <div style={{color:theme.text}} className={css.bodyPost}>{text}</div>
     </div>
   );
 }

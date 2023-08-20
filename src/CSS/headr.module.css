@@ -53,3 +53,17 @@
   align-items: center;
   justify-content: space-around;
 }
+
+.themeIcon{
+  margin-right: 1rem;
+  width: 2.5rem;
+  height: 2.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 25px;
+}
+
+.themeIcon:hover {
+  box-shadow: inset 0 0 100px 100px rgba(255, 255, 255, 0.1);
+}

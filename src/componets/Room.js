@@ -5,7 +5,8 @@ import Avatar from "@mui/material/Avatar";
 import Badge from "@mui/material/Badge";
 
 import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
-
+import { UserContext } from "./UserContext";
+import { useContext } from "react";
 import { styled } from "@mui/material/styles";
 const StyledBadge = styled(Badge)(({ theme }) => ({
   "& .MuiBadge-badge": {
@@ -42,8 +43,10 @@ const Room = ({
   participants = 0,
   id,
 }) => {
+  const {theme} = useContext(UserContext);
+
   return (
-    <div className={css.room}>
+    <div style={{backgroundColor:theme.primary}} className={css.room}>
       <div className={css.roomHeadr}>
         <div
           onClick={(el) => {
@@ -65,7 +68,7 @@ const Room = ({
           <div
             style={{
               fontSize: "0.8rem",
-              color: "#00ABB3",
+              color: theme.fonts,
               marginLeft: "0.5rem",
               fontWeight: "bold",
             }}
@@ -75,6 +78,7 @@ const Room = ({
         </div>
       </div>
       <div
+      style={{color:theme.text}}
         onClick={(el) => {
           window.location.href = `/group/${id}`;
         }}
@@ -88,10 +92,10 @@ const Room = ({
         }}
         className={css.roomBottom}
       >
-        <div className={css.peopleTag}>
-          <PeopleAltIcon style={{ fontSize: "1.1rem", color: "#00ABB3" }} />{" "}
-          <div>{participants}</div>
-          <div>Joined</div>
+        <div style={{color:theme.text}} className={css.peopleTag}>
+          <PeopleAltIcon style={{ fontSize: "1.1rem", color: theme.fonts }} />{" "}
+          <div className={css.pnumber}>{participants}</div>
+          <div className={css.pnumber}>Joined</div>
         </div>
         <div className={css.topicTag}>#{topic}</div>
       </div>

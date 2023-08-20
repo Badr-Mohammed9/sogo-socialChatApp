@@ -3,6 +3,8 @@ import { styled } from "@mui/material/styles";
 import Badge from "@mui/material/Badge";
 import Avatar from "@mui/material/Avatar";
 import css from "../CSS/groupChat.module.css";
+import { UserContext } from "./UserContext";
+import { useContext } from "react";
 
 const StyledBadge = styled(Badge)(({ theme }) => ({
   "& .MuiBadge-badge": {
@@ -34,6 +36,8 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
 }));
 
 function Particpants({ group, inGroup, trigger }) {
+    const {theme} = useContext(UserContext);
+
   const [arrOfParticpants, setArrOfParticptns] = useState([]);
 
   useEffect(() => {
@@ -63,7 +67,7 @@ function Particpants({ group, inGroup, trigger }) {
           <Avatar alt="Remy Sharp" src={user.profile.image} />
         </StyledBadge>
         <div style={{ marginLeft: "0.6rem" }}>
-          <div style={{ color: "white" }}>
+          <div style={{ color: theme.text }}>
             {user.first_name} {user.last_name}
           </div>
           <div

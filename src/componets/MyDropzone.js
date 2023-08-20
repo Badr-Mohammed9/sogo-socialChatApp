@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { useDropzone } from "react-dropzone";
 import css from "../CSS/groupChat.module.css";
+import { UserContext } from "./UserContext";
+import { useContext } from "react";
 
-
-function MyDropzone({ mode,setPostData,postData }) {
+function MyDropzone({ mode, setPostData, postData }) {
+  const { theme } = useContext(UserContext);
 
   const [droppedFile, setDroppedFile] = useState(null);
 
@@ -15,7 +17,7 @@ function MyDropzone({ mode,setPostData,postData }) {
         reader.onload = () => {
           const fileContents = reader.result;
           //   console.log(typeof file);
-          setPostData({...postData,image:file})
+          setPostData({ ...postData, image: file });
           setDroppedFile(fileContents); // Save the file contents in state
         };
         reader.readAsDataURL(file); // Read the file as data URL
@@ -26,10 +28,10 @@ function MyDropzone({ mode,setPostData,postData }) {
   function showDropZone() {
     if (!droppedFile) {
       return (
-        <div style={{ display: `${mode}` }} className={css.imageInput}>
+        <div style={{ display: `${mode}`,backgroundColor:theme.primary }} className={css.imageInput}>
           <div
             style={{
-              backgroundColor: "",
+              backgroundColor: theme.primary,
               width: "80%",
               height: "80%",
               margin: "auto",
@@ -42,7 +44,7 @@ function MyDropzone({ mode,setPostData,postData }) {
             {...getRootProps()}
           >
             <input {...getInputProps()} />
-            <p>Drop image, or click here</p>
+            <p style={{color:theme.text}}>Drop image, or click here</p>
           </div>
         </div>
       );

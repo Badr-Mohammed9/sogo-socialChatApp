@@ -9,50 +9,71 @@ import CancelIcon from "@mui/icons-material/Cancel";
 import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
 import Room from "./Room";
 import axios from "axios";
-function MainPage({ children }) {
-  const [Groups, setGroups] = useState([]);
+import { UserContext } from "./UserContext";
+import { useContext } from "react";
+
+function MainPage({ children,setGroups }) {
+  const {theme} = useContext(UserContext);
   const [formData, setFormData] = useState({
     title: "title",
     topic: "Cybersecurity",
   });
-  const [formState, setFormState] = useState("none");
-  function buttonType() {
-    if (formState) {
-      return (
-        <Button
-          style={{ backgroundColor: "#00ABB3" }}
-          startIcon={<AddIcon />}
-          variant="contained"
-          onClick={(el) => {
-            setFormState("");
-          }}
-        >
-          Create Group
-        </Button>
-      );
-    } else {
-      return (
-        <Button
-          style={{ backgroundColor: "#C70039" }}
-          startIcon={<CancelIcon />}
-          variant="contained"
-          onClick={(el) => {
-            setFormState("none");
-          }}
-        >
-          Cancel
-        </Button>
-      );
+  const [topicName,setTopicName] = useState('')
+
+
+  useEffect(()=>{
+    if (topicName) {
+      const url = "https://sogoapi.onrender.com/group/topic/"+topicName+'/';
+
+    // Assuming you have a valid CSRF token named 'csrftoken'
+    const token = localStorage.getItem("token");
+
+    try {
+      axios
+        .get(url, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Token ${token}`,
+          },
+        })
+        .then(async (response) => {
+          const data = response.data.groups;
+          const updatedData = await Promise.all(
+            data.map(async (group) => {
+              const imageUrl = await getImageFile(group.owner.profile.image);
+              group.owner.profile.image = imageUrl;
+              return group;
+            })
+          );
+          console.log(updatedData);
+          const groupData = updatedData.map((group, index) => {
+            return (
+              <Room
+                key={index}
+                owner={group.owner}
+                title={group.title}
+                topic={group.topic}
+                participants={group.participants.length}
+                id={group.id}
+              />
+            );
+          });
+          setGroups(groupData);
+        });
+    } catch (error) {
+      console.error("Error:", error.response.data);
     }
-  }
+    }
+  },[topicName])
+  
 
   return (
     <Container>
       <div className={css.body}>
-        <div className={css.hashtagPart}>
+        <div style={{backgroundColor:theme.primary}} className={css.hashtagPart}>
           <div
             style={{
-              color: "white",
+              color: theme.text,
               opacity: 0.5,
               fontWeight: "bold",
             }}
@@ -60,48 +81,49 @@ function MainPage({ children }) {
             BROWSE TOPICS
           </div>
           <div className={css.topic}>
-            <div className={css.hashtagName}>All TOPICS</div>
-            <div className={css.topicNumber}>3</div>
+            <div onClick={el => {window.location.href='/'}} className={css.hashtagName}>All TOPICS</div>
+            {/* <div className={css.topicNumber}>3</div> */}
           </div>
           <div className={css.topic}>
-            <div className={css.hashtagName}>#Cybersecurity</div>
-            <div className={css.topicNumber}>3</div>
+            <div onClick={el => {setTopicName('Cybersecurity')}} className={css.hashtagName}>#Cybersecurity</div>
+            {/* <div className={css.topicNumber}>3</div> */}
           </div>
           <div className={css.topic}>
-            <div className={css.hashtagName}>#CloudComputing</div>
-            <div className={css.topicNumber}>3</div>
+            <div onClick={el => {setTopicName('CloudComputing')}} className={css.hashtagName}>#CloudComputing</div>
+            {/* <div className={css.topicNumber}>3</div> */}
           </div>
           <div className={css.topic}>
-            <div className={css.hashtagName}>#SoftwareDevelopment</div>
-            <div className={css.topicNumber}>3</div>
+            <div onClick={el => {setTopicName('SoftwareDevelopment')}} className={css.hashtagName}>#SoftwareDevelopment</div>
+            {/* <div className={css.topicNumber}>3</div> */}
           </div>
           <div className={css.topic}>
-            <div className={css.hashtagName}>#DataManagement</div>
-            <div className={css.topicNumber}>3</div>
+            <div onClick={el => {setTopicName('DataManagement')}} className={css.hashtagName}>#DataManagement</div>
+            {/* <div className={css.topicNumber}>3</div> */}
           </div>
           <div className={css.topic}>
-            <div className={css.hashtagName}>#NetworkAdministration</div>
-            <div className={css.topicNumber}>3</div>
+            <div onClick={el => {setTopicName('NetworkAdministration')}} className={css.hashtagName}>#NetworkAdministration</div>
+            {/* <div className={css.topicNumber}>3</div> */}
           </div>
           <div className={css.topic}>
-            <div className={css.hashtagName}>#ITCareerAdvice</div>
-            <div className={css.topicNumber}>3</div>
+            <div onClick={el => {setTopicName('ITCareerAdvice')}} className={css.hashtagName}>#ITCareerAdvice</div>
+            {/* <div className={css.topicNumber}>3</div> */}
           </div>
           <div className={css.topic}>
-            <div className={css.hashtagName}>#EmergingTechnologies</div>
-            <div className={css.topicNumber}>3</div>
+            <div onClick={el => {setTopicName('EmergingTechnologies')}} className={css.hashtagName}>#EmergingTechnologies</div>
+            {/* <div className={css.topicNumber}>3</div> */}
           </div>
         </div>
 
         <div className={css.roomsPart}>{children}</div>
+
         <div className={css.adPart}>
-          <div className={css.ad}>
+          <div style={{backgroundColor:theme.primary}} className={css.ad}>
             <div
               style={{
                 display: "flex",
                 width: "100%",
                 height: "10%",
-                color: "white",
+                color: theme.text,
                 justifyContent: "space-between",
                 alignItems: "center",
               }}
@@ -118,7 +140,7 @@ function MainPage({ children }) {
               src="https://i.pinimg.com/564x/06/68/ab/0668ab8c3bb93f3f88e61ca4be05565f.jpg"
             />
             {/* bottom ad */}
-            <div>
+            <div style={{color:theme.text}}>
               <div style={{ fontSize: "90%", opacity: "0.9" }}>ResorLink</div>
               <div
                 style={{ fontSize: "75%", opacity: "0.7", marginTop: "0.2rem" }}
@@ -128,7 +150,7 @@ function MainPage({ children }) {
               </div>
             </div>
           </div>
-          <div className={css.friendList}>
+          <div style={{backgroundColor:theme.primary,color:theme.text}} className={css.friendList}>
             <div>Friend List</div>
             <div
               style={{
@@ -175,7 +197,7 @@ function MainPage({ children }) {
 
 const getImageFile = (filename) => {
   const newFilePath = filename.replace("/images/", "");
-  const url = `http://127.0.0.1:8000/group/image/${newFilePath}/`;
+  const url = `https://sogoapi.onrender.com/group/image/${newFilePath}/`;
   const token = localStorage.getItem("token");
 
   return axios({

@@ -8,6 +8,7 @@ import { useState } from "react";
 import TextField from "@mui/material/TextField";
 import { styled } from "@mui/material/styles";
 import { prettyFormat } from "@testing-library/react";
+import { Link } from "react-router-dom";
 
 const BootstrapButton = styled(Button)({
   boxShadow: "none",
@@ -76,7 +77,7 @@ function LoginPage() {
                   };
                   // Send the POST request to the Django API endpoint
                   axios
-                    .post("http://127.0.0.1:8000/login/", data)
+                    .post("https://sogoapi.onrender.com/login/", data)
                     .then((response) => {
                       console.log(response.data);
                       localStorage.setItem('token', response.data.token);
@@ -152,10 +153,12 @@ function LoginPage() {
               }}
             />
 
-            <div className={css.error}>{error}</div>
+            <div style={{color:'red'}} className={css.error}>{error}</div>
             <BootstrapButton variant="contained" disableRipple type="submit">
               Login
             </BootstrapButton>
+            <div>not have an Account? <Link to={'/signup'}>Signup</Link> </div>
+
           </form>
         </div>
       </div>
