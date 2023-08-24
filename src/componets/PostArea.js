@@ -72,9 +72,11 @@ function PostArea({ group, trigger, setTrigger }) {
     };
     const token = localStorage.getItem("token");
     if (token) {
-      fetchPosts();
-    } else {
-      window.location.href = "/login";
+      fetchPosts(); // Fetch immediately
+      const intervalId = setInterval(fetchPosts, 10000); // Fetch every 10 seconds
+  
+      // Clear the interval when the component unmounts
+      return () => clearInterval(intervalId);
     }
   }, [group, trigger]);
   return <>{posts}</>;
@@ -125,3 +127,4 @@ const getImageFileFromImages = (filename) => {
       console.error("Error:", error);
     });
 };
+
